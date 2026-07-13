@@ -1,0 +1,33 @@
+<Window x:Class="GitPulse.Views.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Input" Width="400" Height="160"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E2E" Foreground="#CDD6F4"
+        ResizeMode="NoResize">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="PromptText" Text="Enter value:" FontSize="13" Foreground="#9399B2"/>
+        <TextBox Grid.Row="1" x:Name="InputBox"
+                 Background="#2D2D44" Foreground="#CDD6F4"
+                 BorderBrush="#3B3B5C" BorderThickness="1"
+                 CaretBrush="#CDD6F4" Padding="8,6" FontSize="13"
+                 Margin="0,8" VerticalAlignment="Top"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Click="Cancel_Click" IsCancel="True"
+                    Width="80" Height="32"
+                    Background="Transparent" Foreground="#9399B2"
+                    BorderBrush="#3B3B5C" BorderThickness="1" FontSize="12" Cursor="Hand"/>
+            <Button Content="OK" Click="Ok_Click" IsDefault="True"
+                    Width="80" Height="32" Margin="8,0,0,0"
+                    Background="#89B4FA" Foreground="#1E1E2E"
+                    BorderThickness="0" FontSize="12" FontWeight="SemiBold" Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
+</Window>

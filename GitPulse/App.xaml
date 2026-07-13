@@ -1,0 +1,92 @@
+<Application x:Class="GitPulse.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:GitPulse.Converters"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <conv:FileStatusToColorConverter x:Key="StatusToColor"/>
+            <conv:FileStatusToIconConverter x:Key="StatusToIcon"/>
+            <conv:DiffLineTypeToColorConverter x:Key="LineTypeToColor"/>
+            <conv:BoolToStrikeThroughConverter x:Key="BoolToStrikeThrough"/>
+            <conv:BoolToOpacityConverter x:Key="BoolToOpacity"/>
+            <conv:HexToBrushConverter x:Key="HexToBrush"/>
+            <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <conv:TabToVisibilityConverter x:Key="TabToVisibilityConverter"/>
+            <conv:TabActiveColorConverter x:Key="TabActiveColorConverter"/>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <conv:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+
+            <Style TargetType="Button" x:Key="SmallButtonStyle">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#9399B2"/>
+                <Setter Property="BorderBrush" Value="#3B3B5C"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8,4"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#2D2D44"/>
+                        <Setter Property="Foreground" Value="#CDD6F4"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="Button" x:Key="TabButtonStyle">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#585B70"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="12,8"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#CDD6F4"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="ScrollBar" />
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#2D2D44"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#252540"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Background" Value="#2D2D44"/>
+                <Setter Property="Foreground" Value="#CDD6F4"/>
+                <Setter Property="BorderBrush" Value="#3B3B5C"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8,6"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="CaretBrush" Value="#CDD6F4"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
