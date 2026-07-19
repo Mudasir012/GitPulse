@@ -12,8 +12,24 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="CHANGES" FontSize="11" FontWeight="SemiBold"
-                   Foreground="#9399B2" Padding="12,8" />
+        <Border Padding="14,10,12,6">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="CHANGES" FontSize="11" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                    <TextBlock Text="{Binding Files.Count, StringFormat='  \u00B7  {0}'}"
+                               FontSize="11" Foreground="{StaticResource TextDimBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="Stage All" Command="{Binding StageAllCommand}"
+                        Visibility="{Binding HasUnstagedFiles, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Style="{StaticResource SmallButtonStyle}" FontSize="10" Padding="8,2"/>
+            </Grid>
+        </Border>
 
         <ListBox Grid.Row="1" ItemsSource="{Binding Files}"
                  SelectedItem="{Binding SelectedFile, Mode=TwoWay}"
@@ -21,8 +37,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="8,4" Margin="0,1,8,1"
-                            CornerRadius="4" Background="Transparent">
+                    <Border Padding="10,4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -34,24 +49,37 @@
                             <CheckBox IsChecked="{Binding IsStaged}"
                                       Command="{Binding DataContext.ToggleStageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                       CommandParameter="{Binding}"
-                                      Foreground="#89B4FA" Margin="0,0,8,0"/>
+                                      Margin="0,0,10,0"/>
 
                             <TextBlock Grid.Column="1" Text="{Binding Status, Converter={StaticResource StatusToIcon}}"
                                        Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
-                                       FontFamily="Consolas" FontSize="11"
-                                       Width="16" TextAlignment="Center"/>
+                                       FontFamily="Consolas" FontSize="11" FontWeight="Bold"
+                                       Width="14" TextAlignment="Center"
+                                       VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="2" Text="{Binding FilePath}"
-                                       Foreground="#CDD6F4" FontSize="13"
-                                       Margin="6,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                       Foreground="{StaticResource TextBrush}" FontSize="13"
+                                       VerticalAlignment="Center"
+                                       Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
 
                             <TextBlock Grid.Column="3" Text="{Binding Status}"
                                        Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
-                                       FontSize="10" Margin="4,0"/>
+                                       FontSize="10" Margin="8,0,0,0"
+                                       VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <TextBlock Grid.Row="1" Text="No changes"
+                   Visibility="{Binding HasFiles, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                   Foreground="{StaticResource TextDimBrush}" FontSize="12"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="1" Text="Check the box next to a file to stage it"
+                   Visibility="{Binding HasFiles, Converter={StaticResource BoolToVisibilityConverter}}"
+                   Foreground="{StaticResource TextDimBrush}" FontSize="11"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
     </Grid>
 </UserControl>

@@ -7,10 +7,17 @@ namespace GitPulse.Converters;
 
 public class DiffLineTypeToColorConverter : IValueConverter
 {
-    private static readonly SolidColorBrush AdditionBg = new(Color.FromArgb(40, 166, 227, 161));
-    private static readonly SolidColorBrush DeletionBg = new(Color.FromArgb(40, 243, 139, 168));
-    private static readonly SolidColorBrush HeaderBg = new(Color.FromArgb(30, 137, 180, 250));
-    private static readonly SolidColorBrush DefaultBg = new(Colors.Transparent);
+    private static readonly SolidColorBrush AdditionBg = Create(28, 63, 185, 80);
+    private static readonly SolidColorBrush DeletionBg = Create(28, 248, 81, 73);
+    private static readonly SolidColorBrush HeaderBg = Create(22, 88, 166, 255);
+    private static readonly SolidColorBrush DefaultBg = Create(0, 0, 0, 0);
+
+    private static SolidColorBrush Create(byte a, byte r, byte g, byte b)
+    {
+        var brush = new SolidColorBrush(Color.FromArgb(a, r, g, b));
+        brush.Freeze();
+        return brush;
+    }
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

@@ -1,0 +1,38 @@
+<Window x:Class="GitPulse.Views.GitConfigDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Git Config" Width="400" Height="270"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BgBaseBrush}" Foreground="{StaticResource TextBrush}"
+        ResizeMode="NoResize">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Git user name and email are not configured." FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"/>
+        <TextBlock Grid.Row="1" Text="Enter them below to continue with the commit." FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,12"/>
+
+        <TextBlock Grid.Row="2" Text="User Name" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+        <TextBox Grid.Row="3" x:Name="NameBox"/>
+
+        <TextBlock Grid.Row="4" Text="Email" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,12,0,4"/>
+        <TextBox Grid.Row="5" x:Name="EmailBox"/>
+
+        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Click="Cancel_Click" IsCancel="True"
+                    Width="80" Height="32"
+                    Style="{StaticResource SmallButtonStyle}" FontSize="12"/>
+            <Button Content="OK" Click="Ok_Click" IsDefault="True"
+                    Width="80" Margin="8,0,0,0"
+                    Style="{StaticResource PrimaryButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Window>

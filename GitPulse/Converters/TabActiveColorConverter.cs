@@ -10,10 +10,10 @@ public class TabActiveColorConverter : IValueConverter
         if (value is string activeTab && parameter is string targetTab)
         {
             return activeTab.Equals(targetTab, StringComparison.OrdinalIgnoreCase)
-                ? "#89B4FA"
-                : "#585B70";
+                ? "#58A6FF"
+                : "#61616D";
         }
-        return "#585B70";
+        return "#61616D";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

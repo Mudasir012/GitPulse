@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:GitPulse.ViewModels"
         xmlns:views="clr-namespace:GitPulse.Views"
-        Title="GitPulse" Width="1200" Height="800"
-        Background="#1E1E2E" Foreground="#CDD6F4"
+        Title="GitPulse" Width="1280" Height="800"
+        MinWidth="960" MinHeight="560"
+        Background="{StaticResource BgBaseBrush}" Foreground="{StaticResource TextBrush}"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainViewModel/>
@@ -15,13 +16,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <Border BorderBrush="#3B3B5C" BorderThickness="0,0,0,1" Background="#252540">
-            <Grid Margin="8,4">
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{StaticResource BgPanelBrush}">
+            <Grid Margin="10,5">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -32,30 +35,33 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="GitPulse" FontSize="15" FontWeight="Bold" 
-                           Foreground="#89B4FA" Margin="8,0,16,0" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Text="GitPulse" FontSize="15" FontWeight="Bold"
+                           Foreground="{StaticResource AccentBrush}" Margin="6,0,14,0" VerticalAlignment="Center"/>
 
                 <Button Grid.Column="1" Content="Open" Command="{Binding OpenRepoCommand}"
-                        Style="{StaticResource SmallButtonStyle}" Width="60"/>
+                        Style="{StaticResource SmallButtonStyle}"/>
                 <Button Grid.Column="2" Content="Clone" Command="{Binding CloneRepoCommand}"
-                        Style="{StaticResource SmallButtonStyle}" Width="60"/>
-                <Button Grid.Column="3" Content="Push" Command="{Binding PushCommand}"
-                        Style="{StaticResource SmallButtonStyle}" Width="60"/>
-                <Button Grid.Column="4" Content="Pull" Command="{Binding PullCommand}"
-                        Style="{StaticResource SmallButtonStyle}" Width="60"/>
-                <Button Grid.Column="5" Content="Fetch" Command="{Binding FetchCommand}"
-                        Style="{StaticResource SmallButtonStyle}" Width="60"/>
+                        Style="{StaticResource SmallButtonStyle}"/>
+                <Border Grid.Column="3" Width="1" Margin="6,4"
+                        Background="{StaticResource BorderBrush}"/>
+                <Button Grid.Column="4" Content="Push" Command="{Binding PushCommand}"
+                        Style="{StaticResource SmallButtonStyle}"/>
+                <Button Grid.Column="5" Content="Pull" Command="{Binding PullCommand}"
+                        Style="{StaticResource SmallButtonStyle}"/>
+                <Button Grid.Column="6" Content="Fetch" Command="{Binding FetchCommand}"
+                        Style="{StaticResource SmallButtonStyle}"/>
 
-                <StackPanel Grid.Column="7" Orientation="Horizontal" VerticalAlignment="Center">
-                    <ProgressBar IsIndeterminate="True" Width="80" Margin="0,0,8,0"
+                <StackPanel Grid.Column="8" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="80" Height="4" Margin="0,0,8,0"
                                  Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
-                                 Foreground="#89B4FA" Background="#2D2D44" BorderThickness="0"/>
-                    <TextBlock Text="{Binding ProgressText}" FontSize="11" Foreground="#9399B2" Margin="0,0,8,0"
+                                 Foreground="{StaticResource AccentBrush}" Background="{StaticResource BgInsetBrush}"
+                                 BorderThickness="0"/>
+                    <TextBlock Text="{Binding ProgressText}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,8,0"
                                Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     <TextBlock Text="{Binding CurrentBranch}" FontSize="12" FontWeight="SemiBold"
-                               Foreground="#89B4FA" Margin="0,0,8,0"
+                               Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"
                                Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    <TextBlock Text="{Binding RepoPath}" FontSize="11" Foreground="#585B70"
+                    <TextBlock Text="{Binding RepoPath}" FontSize="11" Foreground="{StaticResource TextDimBrush}"
                                TextTrimming="CharacterEllipsis" MaxWidth="300"
                                Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
@@ -65,74 +71,103 @@
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="260" MinWidth="180" MaxWidth="420"/>
+                <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar -->
-            <Border BorderBrush="#3B3B5C" BorderThickness="0,0,1,0" Background="#252540">
+            <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0"
+                    Background="{StaticResource BgPanelBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="REPOSITORY" FontSize="11" FontWeight="SemiBold"
-                               Foreground="#9399B2" Padding="12,8"/>
+                    <TextBlock Text="BRANCHES" FontSize="11" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}" Padding="14,10,12,6"/>
                     <views:BranchesView Grid.Row="1" DataContext="{Binding Branches}"/>
                 </Grid>
             </Border>
 
+            <GridSplitter Grid.Column="1" Background="Transparent"
+                          HorizontalAlignment="Stretch" Cursor="SizeWE">
+                <GridSplitter.Template>
+                    <ControlTemplate TargetType="GridSplitter">
+                        <Border Background="Transparent">
+                            <Border Width="1" HorizontalAlignment="Center"
+                                    Background="{StaticResource BorderBrush}"/>
+                        </Border>
+                    </ControlTemplate>
+                </GridSplitter.Template>
+            </GridSplitter>
+
             <!-- Center -->
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- Tab bar -->
-                <Border BorderBrush="#3B3B5C" BorderThickness="0,0,0,1" Background="#252540">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Content="Changes" Command="{Binding SwitchToChangesCommand}"
-                                Style="{StaticResource TabButtonStyle}"
-                                Foreground="{Binding ActiveTab, Converter={StaticResource TabActiveColorConverter}, ConverterParameter=changes}"/>
-                        <Button Grid.Column="1" Content="History" Command="{Binding SwitchToHistoryCommand}"
-                                Style="{StaticResource TabButtonStyle}"
-                                Foreground="{Binding ActiveTab, Converter={StaticResource TabActiveColorConverter}, ConverterParameter=history}"/>
-                    </Grid>
+                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
+                        Background="{StaticResource BgPanelBrush}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border BorderThickness="0,0,0,2"
+                                BorderBrush="{Binding ActiveTab, Converter={StaticResource TabIndicatorBrushConverter}, ConverterParameter=changes}">
+                            <Button Content="Changes" Command="{Binding SwitchToChangesCommand}"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Foreground="{Binding ActiveTab, Converter={StaticResource TabActiveColorConverter}, ConverterParameter=changes}"/>
+                        </Border>
+                        <Border BorderThickness="0,0,0,2"
+                                BorderBrush="{Binding ActiveTab, Converter={StaticResource TabIndicatorBrushConverter}, ConverterParameter=history}">
+                            <Button Content="History" Command="{Binding SwitchToHistoryCommand}"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Foreground="{Binding ActiveTab, Converter={StaticResource TabActiveColorConverter}, ConverterParameter=history}"/>
+                        </Border>
+                    </StackPanel>
                 </Border>
 
                 <!-- Changes tab content -->
                 <Grid Grid.Row="1" Visibility="{Binding ActiveTab, Converter={StaticResource TabToVisibilityConverter}, ConverterParameter=changes}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="3"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*" MinHeight="80"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="3*" MinHeight="100"/>
                     </Grid.RowDefinitions>
 
                     <views:WorkingDirectoryView DataContext="{Binding WorkingDirectory}"/>
 
-                    <GridSplitter Grid.Row="1" Background="#3B3B5C" Height="3"
-                                  HorizontalAlignment="Stretch" Cursor="SizeNS"/>
+                    <GridSplitter Grid.Row="1" Background="Transparent"
+                                  HorizontalAlignment="Stretch" Cursor="SizeNS">
+                        <GridSplitter.Template>
+                            <ControlTemplate TargetType="GridSplitter">
+                                <Border Background="Transparent">
+                                    <Border Height="1" VerticalAlignment="Center"
+                                            Background="{StaticResource BorderBrush}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </GridSplitter.Template>
+                    </GridSplitter>
 
                     <views:DiffView Grid.Row="2" DataContext="{Binding Diff}"/>
                 </Grid>
 
-                <!-- History tab content -->
+                <!-- History tab content.
+                     NOTE: Visibility must bind against the Window's DataContext (MainViewModel),
+                     not this element's own DataContext (CommitGraphViewModel), otherwise the
+                     binding silently fails and the view stays visible on top of Changes. -->
                 <views:CommitGraphView Grid.Row="1"
                                        DataContext="{Binding CommitGraph}"
-                                       Visibility="{Binding ActiveTab, Converter={StaticResource TabToVisibilityConverter}, ConverterParameter=history}"/>
+                                       Visibility="{Binding DataContext.ActiveTab, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource TabToVisibilityConverter}, ConverterParameter=history}"/>
             </Grid>
         </Grid>
 
         <!-- Status bar -->
-        <Border Grid.Row="2" BorderBrush="#3B3B5C" BorderThickness="0,1,0,0"
-                Background="#1E1E2E" Padding="12,4">
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0"
+                Background="{StaticResource BgBaseBrush}" Padding="14,4">
             <TextBlock Text="{Binding RepoPath, StringFormat='Repo: {0}'}"
-                       FontSize="11" Foreground="#585B70"
+                       FontSize="11" Foreground="{StaticResource TextDimBrush}"
                        Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Border>
 

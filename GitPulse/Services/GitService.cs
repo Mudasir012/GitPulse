@@ -1,3 +1,4 @@
+using System.IO;
 using GitPulse.Models;
 using LibGit2Sharp;
 
@@ -15,6 +16,36 @@ public class GitService
     {
         _repo?.Dispose();
         _repo = new Repository(path);
+        EnsureGitConfig();
+    }
+
+    public void EnsureGitConfig()
+    {
+        if (_repo is null) return;
+        var localName = _repo.Config.Get<string>("user.name", ConfigurationLevel.Local);
+        var localEmail = _repo.Config.Get<string>("user.email", ConfigurationLevel.Local);
+        if (localName is not null && localEmail is not null) return;
+        var globalName = _repo.Config.Get<string>("user.name", ConfigurationLevel.Global);
+        var globalEmail = _repo.Config.Get<string>("user.email", ConfigurationLevel.Global);
+        if (localName is null && globalName?.Value is not null)
+            _repo.Config.Set("user.name", globalName.Value, ConfigurationLevel.Local);
+        if (localEmail is null && globalEmail?.Value is not null)
+            _repo.Config.Set("user.email", globalEmail.Value, ConfigurationLevel.Local);
+    }
+
+    public bool HasUserConfig()
+    {
+        if (_repo is null) return false;
+        var name = _repo.Config.Get<string>("user.name");
+        var email = _repo.Config.Get<string>("user.email");
+        return name is not null && email is not null;
+    }
+
+    public void SetLocalUserConfig(string name, string email)
+    {
+        if (_repo is null) return;
+        _repo.Config.Set("user.name", name, ConfigurationLevel.Local);
+        _repo.Config.Set("user.email", email, ConfigurationLevel.Local);
     }
 
     public Task CloneAsync(string url, string path)
@@ -173,27 +204,39 @@ public class GitService
         catch { }
     }
 
-    public bool Commit(string message)
+    public (bool Success, string ErrorMessage) Commit(string message)
     {
         try
         {
-            if (_repo is null) return false;
+            if (_repo is null) return (false, "No repository open.");
+            EnsureGitConfig();
             var author = _repo.Config.BuildSignature(DateTimeOffset.Now);
-            if (author is null) return false;
+            if (author is null) return (false, "Git user name and email are not configured.");
+            if (!_repo.RetrieveStatus().IsDirty)
+                return (false, "Nothing to commit. Stage your changes first.");
             _repo.Commit(message, author, author);
-            return true;
+            return (true, "");
         }
-        catch
+        catch (Exception ex)
         {
-            return false;
+            return (false, ex.Message);
         }
     }
 
-    public string GetDiff(string filePath)
+    public string GetDiff(string filePath, bool includeUntrackedContent = false)
     {
         try
         {
             if (_repo is null) return "";
+
+            // Untracked files have no blob in HEAD/index to compare against,
+            // so synthesize an all-additions diff from the working copy.
+            if (includeUntrackedContent)
+            {
+                var synthesized = ReadUntrackedAsAdditions(filePath);
+                if (synthesized is not null) return synthesized;
+            }
+
             var oldTree = _repo.Head?.Tip?.Tree;
             if (oldTree is null) return "";
             var patch = _repo.Diff.Compare<Patch>(oldTree,
@@ -204,6 +247,41 @@ public class GitService
         catch
         {
             return "";
+        }
+    }
+
+    private string? ReadUntrackedAsAdditions(string filePath)
+    {
+        try
+        {
+            var workdir = _repo?.Info?.WorkingDirectory;
+            if (string.IsNullOrEmpty(workdir)) return null;
+            var fullPath = Path.Combine(workdir, filePath);
+            if (!File.Exists(fullPath)) return null;
+
+            var info = new FileInfo(fullPath);
+            if (info.Length > 1_048_576) return "File too large to preview (1 MB limit)";
+
+            const int maxLines = 5000;
+            var sb = new System.Text.StringBuilder();
+            using var reader = new StreamReader(fullPath);
+            string? line;
+            var count = 0;
+            while ((line = reader.ReadLine()) is not null)
+            {
+                if (line.Contains('\0')) return "Binary file - no preview available";
+                if (count++ >= maxLines)
+                {
+                    sb.AppendLine($"... (truncated after {maxLines} lines)");
+                    break;
+                }
+                sb.Append('+').AppendLine(line);
+            }
+            return sb.ToString();
+        }
+        catch
+        {
+            return null;
         }
     }
 

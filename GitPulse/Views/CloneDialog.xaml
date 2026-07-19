@@ -1,11 +1,11 @@
 <Window x:Class="GitPulse.Views.CloneDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Clone Repository" Width="480" Height="200"
+        Title="Clone Repository" Width="520" Height="215"
         WindowStartupLocation="CenterOwner"
-        Background="#1E1E2E" Foreground="#CDD6F4"
+        Background="{StaticResource BgBaseBrush}" Foreground="{StaticResource TextBrush}"
         ResizeMode="NoResize">
-    <Grid Margin="16">
+    <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -14,43 +14,31 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Repository URL" FontSize="12" Foreground="#9399B2" Margin="0,0,0,4"/>
+        <TextBlock Text="Repository URL" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
         <TextBox Grid.Row="1" x:Name="UrlBox"
-                 Text="https://github.com/user/repo.git"
-                 Background="#2D2D44" Foreground="#CDD6F4"
-                 BorderBrush="#3B3B5C" BorderThickness="1"
-                 CaretBrush="#CDD6F4" Padding="8,6" FontSize="13"/>
+                 Text="https://github.com/user/repo.git"/>
 
-        <TextBlock Grid.Row="2" Text="Local Path" FontSize="12" Foreground="#9399B2" Margin="0,12,0,4"/>
+        <TextBlock Grid.Row="2" Text="Local Path" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,12,0,5"/>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="PathBox" Grid.Column="0"
-                     Background="#2D2D44" Foreground="#CDD6F4"
-                     BorderBrush="#3B3B5C" BorderThickness="1"
-                     CaretBrush="#CDD6F4" Padding="8,6" FontSize="13"
                      VerticalAlignment="Top"/>
-            <Button Grid.Column="1" Content="Browse" 
+            <Button Grid.Column="1" Content="Browse"
                     Click="Browse_Click" Margin="8,0,0,0"
-                    Height="32" Width="70"
-                    Background="Transparent" Foreground="#89B4FA"
-                    BorderBrush="#89B4FA" BorderThickness="1"
-                    FontSize="12" Cursor="Hand"/>
+                    Width="76" Height="30"
+                    Style="{StaticResource SmallButtonStyle}" FontSize="12"/>
         </Grid>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
             <Button Content="Cancel" Click="Cancel_Click" IsCancel="True"
                     Width="80" Height="32"
-                    Background="Transparent" Foreground="#9399B2"
-                    BorderBrush="#3B3B5C" BorderThickness="1"
-                    FontSize="12" Cursor="Hand"/>
+                    Style="{StaticResource SmallButtonStyle}" FontSize="12"/>
             <Button Content="Clone" Click="Clone_Click" IsDefault="True"
-                    Width="80" Height="32" Margin="8,0,0,0"
-                    Background="#89B4FA" Foreground="#1E1E2E"
-                    BorderThickness="0" FontSize="12" FontWeight="SemiBold"
-                    Cursor="Hand"/>
+                    Width="80" Margin="8,0,0,0"
+                    Style="{StaticResource PrimaryButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

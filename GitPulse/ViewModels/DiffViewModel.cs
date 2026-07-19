@@ -32,28 +32,47 @@ public partial class DiffViewModel : ObservableObject
             return;
         }
         FileName = file.FilePath;
-        var raw = _git.GetDiff(file.FilePath);
+        var raw = _git.GetDiff(file.FilePath, file.Status == FileStatus.Untracked);
         ParseDiff(raw);
         HasDiff = DiffLines.Count > 0;
     }
 
+    /// <summary>
+    /// Classifies raw unified-diff lines. Only +/- lines inside a hunk (after the
+    /// first @@ header) are additions/deletions - the "--- a/x" and "+++ b/x" file
+    /// headers and other preamble lines are metadata and must not be painted red/green.
+    /// </summary>
     private void ParseDiff(string raw)
     {
         if (string.IsNullOrEmpty(raw)) return;
         var lines = raw.Split('\n');
         var lineNum = 0;
+        var inHunk = false;
         foreach (var line in lines)
         {
-            var type = line switch
+            DiffLineType type;
+            if (line.StartsWith("@@", StringComparison.Ordinal))
             {
-                ['+', ..] => DiffLineType.Addition,
-                ['-', ..] => DiffLineType.Deletion,
-                ['@', ..] => DiffLineType.Header,
-                _ => DiffLineType.Context
-            };
+                type = DiffLineType.Header;
+                inHunk = true;
+            }
+            else if (!inHunk)
+            {
+                type = DiffLineType.Meta;
+            }
+            else
+            {
+                type = line switch
+                {
+                    ['+', ..] => DiffLineType.Addition,
+                    ['-', ..] => DiffLineType.Deletion,
+                    ['\\', ..] => DiffLineType.Meta,
+                    _ => DiffLineType.Context
+                };
+            }
             DiffLines.Add(new DiffLine
             {
-                Text = line,
+                Text = line.TrimEnd('\r'),
                 Type = type,
                 LineNumber = lineNum++
             });

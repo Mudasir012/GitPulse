@@ -6,9 +6,11 @@ public class CommitGraphCalculator
 {
     private static readonly string[] BranchColors =
     [
-        "#89B4FA", "#A6E3A1", "#F9E2AF", "#F38BA8",
-        "#CBA6F7", "#94E2D5", "#FAB387", "#74C7EC"
+        "#58A6FF", "#3FB950", "#D29922", "#F85149",
+        "#BC8CFF", "#39C5CF", "#F0883E", "#F778BA"
     ];
+
+    private const string DimLaneColor = "#3F3F4A";
 
     public List<CommitGraphRow> Calculate(List<CommitInfo> commits, List<BranchInfo> branches)
     {
@@ -66,7 +68,7 @@ public class CommitGraphCalculator
             for (var i = 0; i < prefixChars.Length; i++)
             {
                 prefixChars[i] = ' ';
-                prefixColors[i] = "#585B70";
+                prefixColors[i] = DimLaneColor;
             }
 
             var laneColors = new Dictionary<int, string>();
@@ -95,8 +97,8 @@ public class CommitGraphCalculator
                         {
                             if (prefixChars[li] == ' ')
                             {
-                                prefixChars[li] = '─';
-                                prefixColors[li] = "#585B70";
+                                prefixChars[li] = '\u2500';
+                                prefixColors[li] = DimLaneColor;
                             }
                         }
                     }
@@ -106,14 +108,14 @@ public class CommitGraphCalculator
             foreach (var kv in activeLanes)
             {
                 var li = kv.Key * 2;
-                prefixChars[li] = '│';
+                prefixChars[li] = '\u2502';
                 prefixColors[li] = laneColors[kv.Key];
                 prefixChars[li + 1] = ' ';
             }
 
             if (lane * 2 < prefixChars.Length)
             {
-                prefixChars[lane * 2] = '●';
+                prefixChars[lane * 2] = '\u25CF';
                 prefixColors[lane * 2] = branchColor;
                 if (lane * 2 + 1 < prefixChars.Length)
                 {
@@ -166,7 +168,7 @@ public class CommitGraphCalculator
                     {
                         Text = currentText,
                         Color = currentColor,
-                        IsCommitDot = currentText.Contains('●')
+                        IsCommitDot = currentText.Contains('\u25CF')
                     });
                     currentText = prefixChars[i].ToString();
                     currentColor = prefixColors[i];
@@ -176,7 +178,7 @@ public class CommitGraphCalculator
             {
                 Text = currentText,
                 Color = currentColor,
-                IsCommitDot = currentText.Contains('●')
+                IsCommitDot = currentText.Contains('\u25CF')
             });
 
             rows.Add(new CommitGraphRow

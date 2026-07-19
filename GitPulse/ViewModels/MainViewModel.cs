@@ -49,6 +49,13 @@ public partial class MainViewModel : ObservableObject
 
         WorkingDirectory.PropertyChanged += OnFileSelected;
         Branches.PropertyChanged += OnBranchChanged;
+
+        // TEMP-VERIFY: auto-open repo for UI verification
+        var autoOpen = Environment.GetEnvironmentVariable("GITPULSE_AUTOOPEN");
+        if (!string.IsNullOrWhiteSpace(autoOpen))
+        {
+            try { _git.OpenRepo(autoOpen); RefreshAll(); } catch { }
+        }
     }
 
     private void OnFileSelected(object? sender, PropertyChangedEventArgs e)

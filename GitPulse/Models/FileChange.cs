@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace GitPulse.Models;
 
 public enum FileStatus
@@ -9,9 +11,14 @@ public enum FileStatus
     Staged
 }
 
-public class FileChange
+public partial class FileChange : ObservableObject
 {
-    public string FilePath { get; init; } = "";
-    public FileStatus Status { get; init; }
-    public bool IsStaged { get; set; }
+    [ObservableProperty]
+    private string _filePath = "";
+
+    [ObservableProperty]
+    private FileStatus _status;
+
+    [ObservableProperty]
+    private bool _isStaged;
 }

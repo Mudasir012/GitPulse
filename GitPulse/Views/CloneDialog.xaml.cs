@@ -11,6 +11,7 @@ public partial class CloneDialog : Window
     public CloneDialog()
     {
         InitializeComponent();
+        DarkWindowHelper.Apply(this);
     }
 
     private void Browse_Click(object sender, RoutedEventArgs e)

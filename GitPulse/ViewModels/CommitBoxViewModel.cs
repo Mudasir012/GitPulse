@@ -29,7 +29,16 @@ public partial class CommitBoxViewModel : ObservableObject
     private void Commit()
     {
         if (string.IsNullOrWhiteSpace(CommitMessage)) return;
-        var success = _git.Commit(CommitMessage);
+        if (!_git.HasUserConfig())
+        {
+            var dialog = new GitPulse.Views.GitConfigDialog
+            {
+                Owner = Application.Current.MainWindow
+            };
+            if (dialog.ShowDialog() != true) return;
+            _git.SetLocalUserConfig(dialog.UserName, dialog.UserEmail);
+        }
+        var (success, error) = _git.Commit(CommitMessage);
         if (success)
         {
             CommitMessage = "";
@@ -38,7 +47,7 @@ public partial class CommitBoxViewModel : ObservableObject
         }
         else
         {
-            MessageBox.Show("Commit failed. Check your git config (user name/email).", "Error",
+            MessageBox.Show($"Commit failed.\n{error}", "Error",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }

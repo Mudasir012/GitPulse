@@ -19,7 +19,7 @@ public class CommitInfo
             if (span.TotalHours < 1) return $"{(int)span.TotalMinutes}m ago";
             if (span.TotalDays < 1) return $"{(int)span.TotalHours}h ago";
             if (span.TotalDays < 30) return $"{(int)span.TotalDays}d ago";
-            return AuthorTime.ToString("yyyy-MM-dd");
+            return AuthorTime.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }

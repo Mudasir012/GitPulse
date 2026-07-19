@@ -7,11 +7,18 @@ namespace GitPulse.Converters;
 
 public class FileStatusToColorConverter : IValueConverter
 {
-    private static readonly SolidColorBrush Modified = new(Color.FromRgb(250, 200, 100));
-    private static readonly SolidColorBrush Added = new(Color.FromRgb(166, 227, 161));
-    private static readonly SolidColorBrush Deleted = new(Color.FromRgb(243, 139, 168));
-    private static readonly SolidColorBrush Untracked = new(Color.FromRgb(148, 148, 176));
-    private static readonly SolidColorBrush Staged = new(Color.FromRgb(137, 180, 250));
+    private static readonly SolidColorBrush Modified = Create(210, 153, 34);
+    private static readonly SolidColorBrush Added = Create(63, 185, 80);
+    private static readonly SolidColorBrush Deleted = Create(248, 81, 73);
+    private static readonly SolidColorBrush Untracked = Create(156, 156, 168);
+    private static readonly SolidColorBrush Staged = Create(88, 166, 255);
+
+    private static SolidColorBrush Create(byte r, byte g, byte b)
+    {
+        var brush = new SolidColorBrush(Color.FromRgb(r, g, b));
+        brush.Freeze();
+        return brush;
+    }
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

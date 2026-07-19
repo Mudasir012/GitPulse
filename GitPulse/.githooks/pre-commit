@@ -1,0 +1,13 @@
+#!/bin/sh
+LOCAL_NAME=$(git config --local user.name)
+LOCAL_EMAIL=$(git config --local user.email)
+GLOBAL_NAME=$(git config --global user.name)
+GLOBAL_EMAIL=$(git config --global user.email)
+
+if [ -z "$LOCAL_NAME" ] && [ -n "$GLOBAL_NAME" ]; then
+    git config --local user.name "$GLOBAL_NAME"
+fi
+
+if [ -z "$LOCAL_EMAIL" ] && [ -n "$GLOBAL_EMAIL" ]; then
+    git config --local user.email "$GLOBAL_EMAIL"
+fi

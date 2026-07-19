@@ -5,7 +5,8 @@ public enum DiffLineType
     Context,
     Addition,
     Deletion,
-    Header
+    Header,
+    Meta
 }
 
 public class DiffLine

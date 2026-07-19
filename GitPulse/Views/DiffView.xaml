@@ -11,21 +11,35 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border BorderBrush="#3B3B5C" BorderThickness="0,0,0,1"
-                Padding="12,6">
-            <TextBlock Text="{Binding FileName, StringFormat='Diff: {0}'}"
-                       FontSize="12" FontWeight="SemiBold" Foreground="#9399B2"/>
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
+                Padding="14,7">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="DIFF" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="{Binding FileName}"
+                           FontSize="11" Foreground="{StaticResource TextDimBrush}"
+                           FontFamily="Consolas"
+                           VerticalAlignment="Center" Margin="10,0,0,0"
+                           TextTrimming="CharacterEllipsis"/>
+            </Grid>
         </Border>
 
         <ListBox Grid.Row="1" ItemsSource="{Binding DiffLines}"
                  Background="Transparent" BorderThickness="0"
+                 VirtualizingPanel.ScrollUnit="Pixel"
+                 FontFamily="Consolas"
                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Background="{Binding Type, Converter={StaticResource LineTypeToColor}}"
-                            Padding="8,1,0,1">
-                        <TextBlock Text="{Binding Text}" FontFamily="Consolas" FontSize="12"
-                                   Foreground="#CDD6F4"/>
+                            Padding="12,1,12,1">
+                        <TextBlock Text="{Binding Text}" FontSize="12"
+                                   Foreground="{StaticResource TextBrush}"/>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -33,7 +47,7 @@
 
         <TextBlock Grid.Row="1" Text="Select a file to view diff"
                    Visibility="{Binding HasDiff, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                   Foreground="#9399B2" FontSize="13"
+                   Foreground="{StaticResource TextDimBrush}" FontSize="12"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ public partial class InputDialog : Window
     public InputDialog(string title, string prompt, string defaultValue = "")
     {
         InitializeComponent();
+        DarkWindowHelper.Apply(this);
         Title = title;
         PromptText.Text = prompt;
         InputBox.Text = defaultValue;
