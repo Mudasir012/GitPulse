@@ -22,7 +22,7 @@
         <!-- Toolbar -->
         <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
                 Background="{StaticResource BgPanelBrush}">
-            <Grid Margin="10,5">
+            <Grid Margin="12,7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -35,14 +35,19 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="GitPulse" FontSize="15" FontWeight="Bold"
-                           Foreground="{StaticResource AccentBrush}" Margin="6,0,14,0" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,16,0">
+                    <!-- Modern Pulse Logo Icon -->
+                    <Border Width="22" Height="22" CornerRadius="11" Background="{StaticResource AccentDarkBrush}" Margin="0,0,8,0">
+                        <Path Data="M 4 11 L 8 11 L 10 5 L 13 17 L 15 11 L 18 11" Stroke="White" StrokeThickness="2" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="GitPulse" FontSize="16" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <Button Grid.Column="1" Content="Open" Command="{Binding OpenRepoCommand}"
                         Style="{StaticResource SmallButtonStyle}"/>
                 <Button Grid.Column="2" Content="Clone" Command="{Binding CloneRepoCommand}"
                         Style="{StaticResource SmallButtonStyle}"/>
-                <Border Grid.Column="3" Width="1" Margin="6,4"
+                <Border Grid.Column="3" Width="1" Margin="8,4"
                         Background="{StaticResource BorderBrush}"/>
                 <Button Grid.Column="4" Content="Push" Command="{Binding PushCommand}"
                         Style="{StaticResource SmallButtonStyle}"/>
@@ -58,11 +63,16 @@
                                  BorderThickness="0"/>
                     <TextBlock Text="{Binding ProgressText}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,8,0"
                                Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    <TextBlock Text="{Binding CurrentBranch}" FontSize="12" FontWeight="SemiBold"
-                               Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"
-                               Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Border CornerRadius="4" Background="#1E2638" BorderBrush="{StaticResource BorderStrongBrush}" BorderThickness="1" Padding="8,3" Margin="0,0,10,0"
+                            Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="6" Height="6" Fill="{StaticResource GreenBrush}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentBranch}" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
                     <TextBlock Text="{Binding RepoPath}" FontSize="11" Foreground="{StaticResource TextDimBrush}"
-                               TextTrimming="CharacterEllipsis" MaxWidth="300"
+                               TextTrimming="CharacterEllipsis" MaxWidth="260" VerticalAlignment="Center"
                                Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
             </Grid>
