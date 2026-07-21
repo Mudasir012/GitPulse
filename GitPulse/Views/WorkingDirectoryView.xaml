@@ -37,7 +37,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="10,4">
+                    <Border Padding="12,5" Margin="4,1" CornerRadius="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -49,33 +49,47 @@
                             <CheckBox IsChecked="{Binding IsStaged}"
                                       Command="{Binding DataContext.ToggleStageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                       CommandParameter="{Binding}"
-                                      Margin="0,0,10,0"/>
+                                      Margin="0,0,10,0" VerticalAlignment="Center"/>
 
-                            <TextBlock Grid.Column="1" Text="{Binding Status, Converter={StaticResource StatusToIcon}}"
-                                       Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
-                                       FontFamily="Consolas" FontSize="11" FontWeight="Bold"
-                                       Width="14" TextAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                            <Border Grid.Column="1" Width="20" Height="20" CornerRadius="3"
+                                    Background="{StaticResource BgInsetBrush}"
+                                    BorderBrush="{StaticResource BorderStrongBrush}" BorderThickness="1"
+                                    VerticalAlignment="Center" Margin="0,0,8,0">
+                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusToIcon}}"
+                                           Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
+                                           FontFamily="Consolas" FontSize="11" FontWeight="Bold"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
 
                             <TextBlock Grid.Column="2" Text="{Binding FilePath}"
-                                       Foreground="{StaticResource TextBrush}" FontSize="13"
+                                       Foreground="{StaticResource TextBrush}" FontSize="12.5"
                                        VerticalAlignment="Center"
-                                       Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                       TextTrimming="CharacterEllipsis"/>
 
-                            <TextBlock Grid.Column="3" Text="{Binding Status}"
-                                       Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
-                                       FontSize="10" Margin="8,0,0,0"
-                                       VerticalAlignment="Center"/>
+                            <Border Grid.Column="3" CornerRadius="3" Padding="6,2"
+                                    Background="{StaticResource BgInsetBrush}" VerticalAlignment="Center" Margin="8,0,0,0">
+                                <TextBlock Text="{Binding Status}"
+                                           Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"
+                                           FontSize="10" FontWeight="SemiBold"/>
+                            </Border>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Grid.Row="1" Text="No changes"
-                   Visibility="{Binding HasFiles, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                   Foreground="{StaticResource TextDimBrush}" FontSize="12"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Visibility="{Binding HasFiles, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+            <Border Width="40" Height="40" CornerRadius="20" Background="{StaticResource BgInsetBrush}" Margin="0,0,0,10">
+                <Path Data="M 12 2 L 20 10 L 20 28 L 4 28 L 4 2 Z M 12 2 L 12 10 L 20 10" Stroke="{StaticResource TextDimBrush}" StrokeThickness="1.5" Stretch="Uniform" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+            <TextBlock Text="No uncommitted changes"
+                       Foreground="{StaticResource TextSecondaryBrush}" FontSize="13" FontWeight="SemiBold"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Working directory is completely clean"
+                       Foreground="{StaticResource TextDimBrush}" FontSize="11" Margin="0,4,0,0"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
 
         <TextBlock Grid.Row="1" Text="Check the box next to a file to stage it"
                    Visibility="{Binding HasFiles, Converter={StaticResource BoolToVisibilityConverter}}"
