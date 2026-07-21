@@ -15,17 +15,24 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="10,5">
+                    <Border Padding="12,6,12,6" Margin="4,1" CornerRadius="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+
                             <Ellipse Width="7" Height="7" Fill="{StaticResource AccentBrush}"
                                      Visibility="{Binding IsCurrent, Converter={StaticResource BoolToVisibilityConverter}}"
-                                     VerticalAlignment="Center" Margin="0,0,9,0"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Name}"
-                                       FontSize="13" Foreground="{StaticResource TextBrush}"
+                                     VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                            <Path Grid.Column="1" Data="M 2 4 Q 2 2 4 2 L 6 2 M 6 2 L 6 12 M 6 7 Q 10 7 10 9 L 10 12"
+                                  Stroke="{StaticResource TextSecondaryBrush}" StrokeThickness="1.2"
+                                  Width="12" Height="12" Stretch="Uniform" Margin="0,0,8,0" VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="2" Text="{Binding Name}"
+                                       FontSize="12.5" Foreground="{StaticResource TextBrush}"
                                        VerticalAlignment="Center"
                                        TextTrimming="CharacterEllipsis"/>
                         </Grid>
@@ -34,22 +41,27 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+        <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="4,4">
             <Button Content="+ New Branch"
                     Command="{Binding CreateBranchCommand}"
                     Background="Transparent" Foreground="{StaticResource AccentBrush}"
-                    BorderThickness="0" Padding="14,8"
-                    FontSize="12" Cursor="Hand"
+                    BorderThickness="0" Padding="12,6"
+                    FontSize="12" FontWeight="SemiBold" Cursor="Hand"
                     HorizontalContentAlignment="Left"/>
         </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,2,10,8">
-            <Button Content="Switch" Command="{Binding SwitchBranchCommand}"
-                    Style="{StaticResource SmallButtonStyle}"/>
-            <Button Content="Merge" Command="{Binding MergeBranchCommand}"
-                    Style="{StaticResource SmallButtonStyle}"/>
-            <Button Content="Delete" Command="{Binding DeleteBranchCommand}"
-                    Style="{StaticResource SmallButtonStyle}"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Margin="8,4,8,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Switch" Command="{Binding SwitchBranchCommand}"
+                    Style="{StaticResource SmallButtonStyle}" Margin="2"/>
+            <Button Grid.Column="1" Content="Merge" Command="{Binding MergeBranchCommand}"
+                    Style="{StaticResource SmallButtonStyle}" Margin="2"/>
+            <Button Grid.Column="2" Content="Delete" Command="{Binding DeleteBranchCommand}"
+                    Style="{StaticResource SmallButtonStyle}" Margin="2"/>
+        </Grid>
     </Grid>
 </UserControl>
