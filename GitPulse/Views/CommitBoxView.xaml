@@ -11,15 +11,21 @@
 
             <TextBox Text="{Binding CommitMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="False"
-                     FontSize="13" Padding="10,7"
+                     FontSize="13" Padding="12,8"
                      VerticalContentAlignment="Center"
                      x:Name="MessageBox"/>
 
-            <Button Grid.Column="1" Content="Commit"
+            <Button Grid.Column="1"
                     Command="{Binding CommitCommand}"
                     IsEnabled="{Binding CanCommit}"
-                    Margin="10,0,0,0" Padding="20,0"
-                    Style="{StaticResource PrimaryButtonStyle}"/>
+                    Margin="10,0,0,0" Padding="18,0"
+                    Style="{StaticResource PrimaryButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="M 6 2 A 4 4 0 0 0 6 10 A 4 4 0 0 0 6 2 Z M 6 10 L 6 18 M 6 10 A 4 4 0 0 0 10 14"
+                          Stroke="#FFFFFFFF" StrokeThickness="1.5" Width="12" Height="12" Stretch="Uniform" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Commit" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Button>
         </Grid>
     </Border>
 </UserControl>
