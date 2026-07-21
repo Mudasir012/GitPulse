@@ -46,7 +46,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="10,4">
+                    <Border Padding="10,5" Margin="2,1" CornerRadius="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -57,10 +57,9 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Graph lanes: fixed-width centered cells keep columns aligned
-                                 even when glyphs fall back to other fonts -->
+                            <!-- Graph lanes: fixed-width centered cells keep columns aligned -->
                             <ItemsControl ItemsSource="{Binding Segments}"
-                                          Margin="0,0,8,0" VerticalAlignment="Center">
+                                          Margin="0,0,10,0" VerticalAlignment="Center">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
@@ -77,35 +76,42 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <TextBlock Grid.Column="1" Text="{Binding Commit.ShortSha}"
-                                       FontFamily="Consolas" FontSize="11"
-                                       Foreground="{StaticResource TextDimBrush}"
-                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <!-- Styled SHA Pill -->
+                            <Border Grid.Column="1" Background="#16161B" BorderBrush="{StaticResource BorderStrongBrush}"
+                                    BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Commit.ShortSha}"
+                                           FontFamily="Consolas" FontSize="10.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentBrush}"/>
+                            </Border>
 
                             <TextBlock Grid.Column="2" Text="{Binding Commit.Message}"
-                                       Foreground="{StaticResource TextBrush}" FontSize="13"
+                                       Foreground="{StaticResource TextBrush}" FontSize="12.5"
                                        VerticalAlignment="Center"
                                        TextTrimming="CharacterEllipsis"/>
 
-                            <Border Grid.Column="3" Background="{StaticResource BgInsetBrush}"
-                                    CornerRadius="3" Padding="5,1" Margin="8,0,0,0"
+                            <Border Grid.Column="3" Background="#1E2638"
+                                    CornerRadius="4" Padding="7,2" Margin="8,0,0,0"
                                     BorderBrush="{StaticResource BorderStrongBrush}" BorderThickness="1"
                                     VerticalAlignment="Center"
                                     Visibility="{Binding BranchLabel, Converter={StaticResource NullToVisibilityConverter}}">
-                                <TextBlock Text="{Binding BranchLabel}"
-                                           Foreground="{Binding BranchColor, Converter={StaticResource HexToBrush}}"
-                                           FontSize="10" FontWeight="SemiBold"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="5" Height="5" Fill="{Binding BranchColor, Converter={StaticResource HexToBrush}}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding BranchLabel}"
+                                               Foreground="{Binding BranchColor, Converter={StaticResource HexToBrush}}"
+                                               FontSize="10" FontWeight="Bold"/>
+                                </StackPanel>
                             </Border>
 
                             <TextBlock Grid.Column="4" Text="{Binding Commit.Author}"
-                                       Foreground="{StaticResource TextDimBrush}" FontSize="11"
-                                       VerticalAlignment="Center" Margin="10,0,0,0"
-                                       MaxWidth="140" TextTrimming="CharacterEllipsis"/>
+                                       Foreground="{StaticResource TextSecondaryBrush}" FontSize="11"
+                                       VerticalAlignment="Center" Margin="12,0,0,0"
+                                       MaxWidth="130" TextTrimming="CharacterEllipsis"/>
 
                             <TextBlock Grid.Column="5" Text="{Binding Commit.TimeAgo}"
-                                       Foreground="{StaticResource TextDimBrush}" FontSize="11"
+                                       Foreground="{StaticResource TextDimBrush}" FontSize="10.5"
                                        VerticalAlignment="Center" Margin="10,0,0,0"
-                                       TextAlignment="Right" Width="70"/>
+                                       TextAlignment="Right" Width="75"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
