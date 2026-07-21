@@ -175,10 +175,26 @@
 
         <!-- Status bar -->
         <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0"
-                Background="{StaticResource BgBaseBrush}" Padding="14,4">
-            <TextBlock Text="{Binding RepoPath, StringFormat='Repo: {0}'}"
-                       FontSize="11" Foreground="{StaticResource TextDimBrush}"
-                       Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                Background="{StaticResource BgPanelBrush}" Padding="14,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Visibility="{Binding IsRepoOpen, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Path Data="M 2 4 Q 2 2 4 2 L 7 2 Q 8 2 9 3.5 L 10 5 L 18 5 Q 20 5 20 7 L 20 16 Q 20 18 18 18 L 4 18 Q 2 18 2 16 Z"
+                          Stroke="{StaticResource TextDimBrush}" StrokeThickness="1.2" Width="12" Height="12" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding RepoPath}" FontSize="11" Foreground="{StaticResource TextDimBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border CornerRadius="3" Background="{StaticResource BgInsetBrush}" Padding="6,2" BorderBrush="{StaticResource BorderStrongBrush}" BorderThickness="1">
+                        <TextBlock Text="Ready" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource GreenBrush}"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- Commit Box -->
